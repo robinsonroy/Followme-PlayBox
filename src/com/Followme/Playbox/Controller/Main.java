@@ -1,0 +1,81 @@
+package com.Followme.Playbox.Controller;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Main {
+
+    public static void main(String[] args) {
+
+        CommandeLine cmd = null;
+        TCPServer server = new TCPServer();
+        String rep;
+
+        server.runServer();
+
+        Pattern pattern = Pattern.compile("^(\\d+):(.+)$");
+        Matcher matcher;
+        Pattern musicStatepattern = Pattern.compile("\\[(paused|playing)\\]");
+        Matcher matcher2;
+        //Regex volume "volume: (\\d{1,3})%"
+
+        boolean finish = false;
+        while (!finish) {
+
+            System.out.println("Check is running");
+            for (; ; ) {
+
+                try {
+                    Thread.sleep(1);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (server.getClientSentence() != null) {
+                    matcher = pattern.matcher(server.getClientSentence());
+                    if (matcher.find()) {
+                        if (matcher.group(1).equals("1")) {
+
+                            String url = matcher.group(2);
+                            System.out.println("Start new song ..");
+                            cmd = new CommandeLine("mpc clear");
+                            cmd.exec();
+                            cmd = new CommandeLine("mpc add " + url);
+                            System.out.println("mpc add " + url);
+                            rep = cmd.exec();
+                            cmd = new CommandeLine("mpc play");
+                            System.out.println("mpc play");
+                            rep = rep + cmd.exec();
+                            System.out.println(rep);
+
+                        } else if (matcher.group(1).equals("2")) {
+
+                            System.out.println("mpc");
+                            cmd = new CommandeLine("mpc");
+                            rep = cmd.exec();
+                            System.out.println(rep);
+
+                            matcher2 = musicStatepattern.matcher(rep);
+                            if (matcher2.find()) {
+                                System.out.println("Find");
+                                if (matcher2.group(1).equals("playing")) {
+
+                                    System.out.println("Pause ...");
+                                    cmd = new CommandeLine("mpc pause");
+                                    cmd.exec();
+
+                                } else if (matcher2.group(1).equals("paused")) {
+
+                                    System.out.println("Play ...");
+                                    cmd = new CommandeLine("mpc play");
+                                    cmd.exec();
+                                }
+                            }
+                        }
+                    }
+                }
+                server.setClientSentence(null);
+            }
+        }
+    }
+}

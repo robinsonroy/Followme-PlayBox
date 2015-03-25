@@ -1,0 +1,10 @@
+<component name="ArtifactManager">
+  <artifact name="Followme-PlayBox:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Followme_PlayBox_jar</output-path>
+    <root id="root">
+      <element id="archive" name="Followme-PlayBox.jar">
+        <element id="module-output" name="Followme-PlayBox" />
+      </element>
+    </root>
+  </artifact>
+</component>
