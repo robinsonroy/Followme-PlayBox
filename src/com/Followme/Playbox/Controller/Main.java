@@ -77,7 +77,7 @@ public class Main {
                             cmd = new CommandeLine("mpc");
                             rep = cmd.exec();
                             System.out.println(rep);
-                            if (matcher.group(2).equals("+")) {
+                            if (matcher.group(2).equals("+")) { //Volume up
 
                                 matcher2 = volumePattern.matcher(rep);
                                 String volume = matcher2.group(1);
@@ -88,17 +88,28 @@ public class Main {
                                     volumeStat = volumeStat + 5;
 
                                 cmd = new CommandeLine("mpc volume " + volumeStat);
+                                cmd.exec();
 
-                            } else if (matcher.group(2).equals("-")) {
+                            } else if (matcher.group(2).equals("-")) { //Volume Down
 
                                 matcher2 = volumePattern.matcher(rep);
                                 String volume = matcher2.group(1);
-                                int volumeStat = Integer.parseInt(volume);
-                                if (volumeStat < 5)
-                                    volumeStat = 0;
+                                int volumeState = Integer.parseInt(volume);
+                                if (volumeState < 5)
+                                    volumeState = 0;
                                 else
-                                    volumeStat = volumeStat + 5;
-                                cmd = new CommandeLine("mpc volume " + volumeStat);
+                                    volumeState = volumeState + 5;
+                                cmd = new CommandeLine("mpc volume " + volumeState);
+                                cmd.exec();
+                            } else { // Change volume with int between 0 and 10
+                                String volume = matcher.group(2);
+                                try {
+                                    int volumeState = Integer.parseInt(volume);
+                                    cmd = new CommandeLine("mpc volume " + volumeState);
+                                    cmd.exec();
+                                } catch (NumberFormatException e) {
+                                    e.printStackTrace();
+                                }
                             }
                         }
                     }
