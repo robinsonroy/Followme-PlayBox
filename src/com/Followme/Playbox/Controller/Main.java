@@ -17,7 +17,7 @@ public class Main {
         Matcher matcher;
         Pattern musicStatePattern = Pattern.compile("\\[(paused|playing)\\]");
         Matcher matcher2;
-        Pattern volumePattern = Pattern.compile("(\\d{1,3})%");
+        Pattern volumePattern = Pattern.compile("volume: {0,1}(\\d{1,3})%");
 
         boolean finish = false;
         while (!finish) {
@@ -71,7 +71,7 @@ public class Main {
                                     cmd.exec();
                                 }
                             }
-                        } else if (matcher.group("1").equals("3")) {
+                        } else if (matcher.group(1).equals("3")) {
 
                             System.out.println("mpc");
                             cmd = new CommandeLine("mpc");
@@ -80,27 +80,33 @@ public class Main {
                             if (matcher.group(2).equals("+")) { //Volume up
 
                                 matcher2 = volumePattern.matcher(rep);
-                                String volume = matcher2.group(1);
-                                int volumeStat = Integer.parseInt(volume);
-                                if (volumeStat > 95)
-                                    volumeStat = 100;
-                                else
-                                    volumeStat = volumeStat + 5;
+                                if(matcher2.find()){
+                                    String volume = matcher2.group(1);
+                                    int volumeStat = Integer.parseInt(volume);
+                                    if (volumeStat > 95)
+                                        volumeStat = 100;
+                                    else
+                                        volumeStat = volumeStat + 5;
 
-                                cmd = new CommandeLine("mpc volume " + volumeStat);
-                                cmd.exec();
+                                    cmd = new CommandeLine("mpc volume " + volumeStat);
+                                    cmd.exec();
+                                }
+                                
 
                             } else if (matcher.group(2).equals("-")) { //Volume Down
 
                                 matcher2 = volumePattern.matcher(rep);
-                                String volume = matcher2.group(1);
-                                int volumeState = Integer.parseInt(volume);
-                                if (volumeState < 5)
-                                    volumeState = 0;
-                                else
-                                    volumeState = volumeState + 5;
-                                cmd = new CommandeLine("mpc volume " + volumeState);
-                                cmd.exec();
+                                
+                                if(matcher2.find()){
+                                    String volume = matcher2.group(1);
+                                    int volumeState = Integer.parseInt(volume);
+                                    if (volumeState < 5)
+                                        volumeState = 0;
+                                    else
+                                        volumeState = volumeState - 5;
+                                    cmd = new CommandeLine("mpc volume " + volumeState);
+                                    cmd.exec();
+                                } 
                             } else { // Change volume with int between 0 and 10
                                 String volume = matcher.group(2);
                                 try {
