@@ -85,8 +85,10 @@ public class Main {
                                     int volumeStat = Integer.parseInt(volume);
                                     if (volumeStat > 95)
                                         volumeStat = 100;
-                                    else
-                                        volumeStat = volumeStat + 5;
+                                    else if(volumeStat < 40){
+                                        volumeStat = 45;
+                                    }else volumeStat = volumeStat + 5;
+
 
                                     cmd = new CommandeLine("mpc volume " + volumeStat);
                                     cmd.exec();
@@ -100,7 +102,7 @@ public class Main {
                                 if(matcher2.find()){
                                     String volume = matcher2.group(1);
                                     int volumeState = Integer.parseInt(volume);
-                                    if (volumeState < 5)
+                                    if (volumeState < 45)
                                         volumeState = 0;
                                     else
                                         volumeState = volumeState - 5;
