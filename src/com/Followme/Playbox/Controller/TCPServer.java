@@ -52,8 +52,8 @@ class TCPServer implements Runnable {
                 if (clientSentence != null) {
                     String temp = clientSentence;
                     System.out.println("Received: " + clientSentence);
-                    temp = temp.toUpperCase() + '\n';
-                    outToClient.writeBytes(temp);
+                    //temp = temp.toUpperCase() + '\n';
+                    //outToClient.writeBytes(temp);
                 }
             }
         } catch (IOException e) {

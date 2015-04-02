@@ -17,7 +17,7 @@ public class Main {
         Matcher matcher;
         Pattern musicStatePattern = Pattern.compile("\\[(paused|playing)\\]");
         Matcher matcher2;
-        Pattern volumePattern = Pattern.compile("volume: {0,1}(\\d{1,3})%");
+        Pattern volumePattern = Pattern.compile("volume: {0,2}(\\d{1,3})%");
 
         boolean finish = false;
         while (!finish) {
