@@ -119,6 +119,11 @@ public class Main {
                                     e.printStackTrace();
                                 }
                             }
+                        } else if (matcher.group(1).equals("4")) {
+                            System.out.println("mpc clear");
+                            cmd = new CommandeLine("mpc clear");
+                            rep = cmd.exec();
+                            System.out.println(rep);
                         }
                     }
                 }
