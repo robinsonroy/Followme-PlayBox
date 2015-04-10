@@ -3,8 +3,15 @@ package com.Followme.Playbox.Controller;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * class to execute main function
+ */
 public class Main {
 
+    /**
+     * keep sentence from client, analyse and execute commande define in protocol
+     * @param args
+     */
     public static void main(String[] args) {
 
         CommandeLine cmd = null;
@@ -19,6 +26,7 @@ public class Main {
         Matcher matcher2;
         Pattern volumePattern = Pattern.compile("volume: {0,2}(\\d{1,3})%");
 
+        // playing loop
         boolean finish = false;
         while (!finish) {
 
@@ -31,9 +39,11 @@ public class Main {
                     e.printStackTrace();
                 }
 
+                // if client send message
                 if (server.getClientSentence() != null) {
                     matcher = pattern.matcher(server.getClientSentence());
                     if (matcher.find()) {
+                        // if message is about starting a song
                         if (matcher.group(1).equals("1")) {
 
                             String url = matcher.group(2);
@@ -48,6 +58,7 @@ public class Main {
                             rep = rep + cmd.exec();
                             System.out.println(rep);
 
+                            // if message is about play/pause
                         } else if (matcher.group(1).equals("2")) {
 
                             System.out.println("mpc");
@@ -71,6 +82,7 @@ public class Main {
                                     cmd.exec();
                                 }
                             }
+                            // if message is about volume
                         } else if (matcher.group(1).equals("3")) {
 
                             System.out.println("mpc");
@@ -93,7 +105,6 @@ public class Main {
                                     cmd = new CommandeLine("mpc volume " + volumeStat);
                                     cmd.exec();
                                 }
-                                
 
                             } else if (matcher.group(2).equals("-")) { //Volume Down
 
@@ -119,6 +130,7 @@ public class Main {
                                     e.printStackTrace();
                                 }
                             }
+                            //if commande is abour stop music
                         } else if (matcher.group(1).equals("4")) {
                             System.out.println("mpc clear");
                             cmd = new CommandeLine("mpc clear");
