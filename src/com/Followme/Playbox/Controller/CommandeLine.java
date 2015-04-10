@@ -12,12 +12,28 @@ import java.io.InputStream;
 /**
  * Created by Robinson Roy on 25/03/15.
  */
+
+/**
+ * Class use to execute commande for music gesture
+ * use mpc to command music player deamon on PlayBox
+ */
 public class CommandeLine {
 
+    /**
+     * come back from mpc commande
+     */
     private char[] buffer = new char[2000];
+
+    /**
+     * command to execute
+     */
     private String cmd;
 
 
+    /**
+     * init command
+     * @param cmd
+     */
     public CommandeLine(String cmd) {
         this.cmd = cmd;
         for (int i = 0; i < 200; i++) {
@@ -25,6 +41,10 @@ public class CommandeLine {
         }
     }
 
+    /**
+     * execute command
+     * @return terminal return
+     */
     public String exec() {
 
         Runtime r = Runtime.getRuntime();

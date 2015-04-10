@@ -7,34 +7,70 @@ package com.Followme.Playbox.Controller;
 import java.io.*;
 import java.net.*;
 
+/**
+ * Serveur TCP
+ * Listen commande from SmartBox for music gesture
+ */
 class TCPServer implements Runnable {
 
+    /**
+     * Sentence receive from clien (SmartBox)
+     */
     private String clientSentence;
 
+    /**
+     * Boolean to close thread
+     */
     protected volatile boolean running = true;
+
+    /**
+     * Thread to listen commande
+     */
     private Thread thread;
 
 
+    /**
+     * Thread init
+     */
     public TCPServer() {
         thread = new Thread(this);
     }
 
+    /**
+     * get client sentence
+     * @return client sentence
+     */
     public String getClientSentence() {
         return clientSentence;
     }
 
+    /**
+     * set clientSentence (need to init at null when there is no sentence from client)
+     * @param clientSentence
+     */
     public void setClientSentence(String clientSentence) {
         this.clientSentence = clientSentence;
     }
 
+    /**
+     * Start thread TCP server
+     */
     public void runServer() {
         thread.start();
     }
 
+    /**
+     * Stop thread TCP server
+     */
     public void stopServer() {
         running = false;
     }
 
+    /**
+     * thread's run
+     * Listen TCP client
+     * share new sentence in String clientSentence
+     */
     public void run() {
         System.out.println("Server TCP lance");
 
@@ -52,8 +88,8 @@ class TCPServer implements Runnable {
                 if (clientSentence != null) {
                     String temp = clientSentence;
                     System.out.println("Received: " + clientSentence);
-                    temp = temp.toUpperCase() + '\n';
-                    outToClient.writeBytes(temp);
+                    //temp = temp.toUpperCase() + '\n';
+                    //outToClient.writeBytes(temp);
                 }
             }
         } catch (IOException e) {
